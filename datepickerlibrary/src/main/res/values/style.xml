@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 日期选择器 -->
+    <style name="DatePickerDialogPanel" parent="android:Theme.Holo.Light.Panel">
+        <item name="android:textStyle">normal</item>
+    </style>
+</resources>
