@@ -21,7 +21,7 @@ allprojects {
 
 ```java
 dependencies {
-	        compile 'com.github.chenxyu:DatePicker:1.1.0'
+	        compile 'com.github.chenxyu:DatePicker:1.1.2'
 	}
 ```
 
