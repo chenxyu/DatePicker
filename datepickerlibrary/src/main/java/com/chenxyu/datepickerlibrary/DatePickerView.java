@@ -3,77 +3,71 @@ package com.chenxyu.datepickerlibrary;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by ChenXingYu on 2017/3/3.
+ * @author ChenXingYu
+ * @date 2017/3/3
  */
-
 public class DatePickerView {
-    public static final int YEAR_MONTH_DAY = 0; //默认
-    public static final int YEAR_MONTH = 1;
-
     /**
-     * @param callBack 返回日期
+     * 显示日期选择器
+     *
+     * @param context Context
+     * @param view    TextView
      */
-    public static void showDatePickerDialog(Context context, CallBack callBack) {
-        showDatePickerDialog(context, YEAR_MONTH_DAY, callBack);
+    public static void showDatePickerDialog(Context context, TextView view) {
+        showDatePickerDialog(context, view, -1);
     }
 
     /**
-     * @param module   显示年月日（YEAR_MONTH_DAY 默认），显示年月（YEAR_MONTH）
-     * @param callBack 返回日期
+     * 显示日期选择器
+     *
+     * @param context  Context
+     * @param view     TextView
+     * @param colorRes 颜色
      */
-    public static void showDatePickerDialog(final Context context, final int module, final CallBack callBack) {
-        final Calendar calendar = Calendar.getInstance(Locale.CHINA);
+    public static void showDatePickerDialog(Context context, TextView view, int colorRes) {
+        Handler mHandler = new Handler(context.getMainLooper());
+        //获得当前日期
+        Calendar calendar = Calendar.getInstance(Locale.CHINA);
         calendar.setTime(new Date());
 
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog mDialog = new MyDatePickerDialog(context, R.style.DatePickerDialogPanel, null, mYear, mMonth, mDay, module);
+        DatePickerDialog mDialog = new MyDatePickerDialog(context, R.style.DatePickerDialogPanel, null, mYear, mMonth, mDay);
         final DatePicker mDatePicker = mDialog.getDatePicker();
-        mDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.picker_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String mYear = String.valueOf(mDatePicker.getYear());
-                final String mDay;
-                if (mDatePicker.getDayOfMonth() >= 10)
-                    mDay = String.valueOf(mDatePicker.getDayOfMonth());
-                else
-                    mDay = 0 + String.valueOf(mDatePicker.getDayOfMonth());
-                final String mMonth;
-                if ((mDatePicker.getMonth() + 1) >= 10)
-                    mMonth = String.valueOf(mDatePicker.getMonth() + 1);
-                else
-                    mMonth = 0 + String.valueOf(mDatePicker.getMonth() + 1);
+        mDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.picker_ok), (dialog, which) -> {
+            final String mYear1 = String.valueOf(mDatePicker.getYear());
+            final String mDay1;
+            if (10 <= mDatePicker.getDayOfMonth()) {
+                mDay1 = String.valueOf(mDatePicker.getDayOfMonth());
+            } else {
+                mDay1 = 0 + String.valueOf(mDatePicker.getDayOfMonth());
+            }
+            final String mMonth1;
+            if (10 <= (mDatePicker.getMonth() + 1)) {
+                mMonth1 = String.valueOf(mDatePicker.getMonth() + 1);
+            } else {
+                mMonth1 = 0 + String.valueOf(mDatePicker.getMonth() + 1);
+            }
 
-
-                switch (module) {
-                    case YEAR_MONTH_DAY:
-                        callBack.showDate(module, mYear, mMonth, mDay);
-                        break;
-                    case YEAR_MONTH:
-                        callBack.showDate(module, mYear, mMonth, mDay);
-                        break;
+            mHandler.post(() -> {
+                view.setText(String.format("%s-%s-%s", mYear1, mMonth1, mDay1));
+                if (-1 != colorRes) {
+                    view.setTextColor(context.getResources().getColor(colorRes));
                 }
-            }
+            });
         });
-        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.picker_no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.picker_no), (dialog, which) -> dialog.cancel());
         mDialog.show();
-    }
-
-    public interface CallBack {
-        void showDate(int module, String year, String month, String day);
     }
 }
