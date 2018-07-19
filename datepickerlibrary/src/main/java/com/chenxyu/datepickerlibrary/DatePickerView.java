@@ -13,7 +13,6 @@ import java.util.Locale;
 
 /**
  * @author ChenXingYu
- * @date 2017/3/3
  */
 public class DatePickerView {
     /**
