@@ -27,5 +27,6 @@ dependencies {
 # 使用方法
 
 ```java
+    TextView mDate = findViewById(R.id.date);
     DatePickerView.showDatePickerDialog(this, mDate);
 ```
