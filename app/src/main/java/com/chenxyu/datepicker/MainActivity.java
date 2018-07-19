@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDate = (TextView) findViewById(R.id.date);
+        mDate = findViewById(R.id.date);
         findViewById(R.id.btn).setOnClickListener(this);
     }
 

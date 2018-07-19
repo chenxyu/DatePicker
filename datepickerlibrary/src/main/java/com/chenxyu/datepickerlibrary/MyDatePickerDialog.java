@@ -2,12 +2,10 @@ package com.chenxyu.datepickerlibrary;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.widget.DatePicker;
 
 /**
  * @author ChenXingYu
- * @date 2017/3/3
  */
 public class MyDatePickerDialog extends DatePickerDialog {
     MyDatePickerDialog(Context context, int theme, OnDateSetListener listener, int year, int monthOfYear, int dayOfMonth) {
@@ -16,7 +14,7 @@ public class MyDatePickerDialog extends DatePickerDialog {
     }
 
     @Override
-    public void onDateChanged(@NonNull DatePicker view, int year, int month, int day) {
+    public void onDateChanged(DatePicker view, int year, int month, int day) {
         super.onDateChanged(view, year, month, day);
         this.setTitle(year + "年" + (month + 1) + "月" + day + "日");
     }
